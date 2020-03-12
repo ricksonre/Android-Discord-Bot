@@ -1,46 +1,41 @@
-//package com.example.androiddiscordbot;
-//
-//public class Bot {
-//}
+package com.example.androiddiscordbot;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-        import net.dv8tion.jda.api.JDA;
-        import net.dv8tion.jda.api.JDABuilder;
-        import net.dv8tion.jda.api.Permission;
-        import net.dv8tion.jda.api.entities.*;
-        import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-        import net.dv8tion.jda.api.exceptions.PermissionException;
-        import net.dv8tion.jda.api.exceptions.RateLimitedException;
-        import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import javax.security.auth.login.LoginException;
 
-        import javax.security.auth.login.LoginException;
-        import java.util.List;
-        import java.util.Random;
-        import java.util.concurrent.ThreadLocalRandom;
-
-public class Main extends ListenerAdapter {
-    /**
-     * This is the method where the program starts.
-     */
-    public static void main(String[] args) {
+public class Bot extends ListenerAdapter
+{
+    // initializes the bot
+    public void startBot()
+    {
         //We construct a builder for a BOT account. If we wanted to use a CLIENT account
         // we would use AccountType.CLIENT
-        try {
+        try
+        {
             JDA jda = new JDABuilder("Njg2NDAxOTA1MDkzNTA5MjIw.XmW3ww._aOo2xs8cUb_r1d3w7iNkqvTknM")
-                    .addEventListeners(new Main())  // An instance of a class that will handle events.
+                    .addEventListeners(new Bot())  // An instance of a class that will handle events.
                     .build();
             jda.awaitReady(); // Blocking guarantees that JDA will be completely loaded.
             System.out.println("Finished Building JDA!");
-        } catch (LoginException e) {
+        }
+        catch (LoginException e)
+        {
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(MessageReceivedEvent event)
+    {
         //These are provided with every event in JDA
         JDA jda = event.getJDA();                       //JDA, the core of the api.
         long responseNumber = event.getResponseNumber();//The amount of discord events that JDA has received since the last reconnect.
@@ -68,15 +63,18 @@ public class Main extends ListenerAdapter {
             Member member = event.getMember();          //This Member that sent the message. Contains Guild specific information about the User!
 
             String name;
-            if (message.isWebhookMessage()) {
+            if (message.isWebhookMessage())
+            {
                 name = author.getName();                //If this is a Webhook message, then there is no Member associated
             }                                           // with the User, thus we default to the author for name.
-            else {
+            else
+            {
                 name = member.getEffectiveName();       //This will either use the Member's nickname if they have one,
             }                                           // otherwise it will default to their username. (User#getName())
 
             System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
-        } else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
+        }
+        else if (event.isFromType(ChannelType.PRIVATE)) //If this message was sent to a PrivateChannel
         {
             //The message was sent in a PrivateChannel.
             //In this example we don't directly use the privateChannel, however, be sure, there are uses for it!
@@ -85,19 +83,22 @@ public class Main extends ListenerAdapter {
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-        if (msg.equals("hi")) {
+        if (msg.equals("hi"))
+        {
             channel.sendMessage("hello there").queue();
         }
-        else if (msg.equals("give repo")) {
+        else if (msg.equals("give repo"))
+        {
             channel.sendMessage("").queue();
         }
-        else if (msg.equals("69")) {
+        else if (msg.equals("69"))
+        {
             channel.sendMessage("nice").queue();
         }
-        else if (msg.equals("spam")) {
-            for(int i=0; i<25; i++) {
+        else if (msg.equals("spam"))
+        {
+            for(int i=0; i<25; i++)
                 channel.sendMessage("hello there").queue();
-            }
         }
     }
 }
